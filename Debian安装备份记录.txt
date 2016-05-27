@@ -1,0 +1,94 @@
+修改软件源。（软件仓库）
+nano /etc/apt/sources.list
+==================================================================================
+deb http://mirrors.163.com/debian/ jessie main non-free contrib
+deb http://mirrors.163.com/debian/ jessie-updates main non-free contrib
+deb http://mirrors.163.com/debian/ jessie-backports main non-free contrib
+deb-src http://mirrors.163.com/debian/ jessie main non-free contrib
+deb-src http://mirrors.163.com/debian/ jessie-updates main non-free contrib
+deb-src http://mirrors.163.com/debian/ jessie-backports main non-free contrib
+deb http://mirrors.163.com/debian-security/ jessie/updates main non-free contrib
+deb-src http://mirrors.163.com/debian-security/ jessie/updates main non-free contrib
+==================================================================================
+安装编辑器和文件管理器。
+aptitude update
+aptitude install vim
+aptitude install pcmanfm
+aptitude install dkms
+==================================================================================
+安装A卡显卡驱动。
+aptitude install module-assistant build-essential dh-make libstdc++6 linux-headers-$(uname -r)
+chmod +x amd-driver-installer-**.**.****-x86.x86_64.run
+Ctrl+Alt+F1   组合键
+sh ./amd-driver-installer-**.**.****-x86.x86_64.run
+aticonfig --initial
+reboot
+==================================================================================
+安装N卡显卡驱动。
+aptitude install build-essential linux-headers-$(uname -r)
+chmod +x NVIDIA-Linux-x86_64-***.**.run
+vim /etc/modprobe.d/blacklist.conf
+------------------------------------------------------------------------------------
+blacklist nouveau
+------------------------------------------------------------------------------------
+Ctrl+Alt+F1   组合键
+service lightdm stop
+sh ./NVIDIA-Linux-x86_64-***.**.run
+reboot
+==================================================================================
+安装浏览器和输入法。
+aptitude install libcurl3 libappindicator1
+dpkg -i google-chrome-stable_current_amd64.deb
+aptitude install fcitx fcitx-table-wbpy
+aptitude install libreoffice-l10n-zh-cn
+==================================================================================
+开机默认启动输入法。
+vim /etc/profile
+-----------------------------------------------------------------------------------------------------------------------------------
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+fcitx &
+==================================================================================
+安装硬件级虚拟机。（vm.tar.gz已经下载）
+cd /home
+rm -rf lost+found
+cd sd01     //"sd01"是用户名。
+tar zxvf vm.tar.gz
+cd vm
+sh install
+==================================================================================
+卸载无用软件。
+aptitude purge imagemagick
+rm -f /usr/share/applications/display-im6.q16.desktop
+aptitude purge gnome-orca
+==================================================================================
+安装手机模拟器。
+aptitude install libqt4-network libqt4-opengl
+dpkg -i virtualbox-*.*_*.*.*-******-Debian-jessie_amd64.deb
+chmod +x genymotion-*.*.*_x64_debian.bin
+./genymotion-*.*.*_x64_debian.bin
+==================================================================================
+安装（Genymotion）快捷方式。
+vim /usr/share/applications/Genymotion.desktop
+---------------------------------------------------------------------------------
+[Desktop Entry]
+Version=1.0
+Name=Genymotion
+Type=Application
+Exec=/home/****/genymotion/genymotion %U
+Icon=/home/****/genymotion/icons/icon.png
+Categories=Emulator;System;Application;
+---------------------------------------------------------------------------------
+问题：Qt版本问题。
+cd genymotion
+mkdir qt && mv libQt* qt
+aptitude install libxi-dev libxmu-dev
+aptitude install libqt4-dev libqt4-gui libqt4-sql
+==================================================================================
+修改启动菜单和等待时间。
+chmod +w /boot/grub/grub.cfg
+vim /boot/grub/grub.cfg
+rm -f /root/.bash_history
+==================================================================================
+
